@@ -4,6 +4,36 @@ const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
 
+// Hide error modal on load
+const modal = document.getElementById('modal');
+modal.classList.add('hidden');
+
+// Add click listeners to all hearts
+document.querySelectorAll('.like-glyph').forEach(glyph => {
+  glyph.addEventListener('click', () => {
+    mimicServerCall()
+      .then(() => {
+        // Toggle heart state on success
+        if (glyph.textContent === EMPTY_HEART) {
+          glyph.textContent = FULL_HEART;
+          glyph.classList.add('activated-heart');
+        } else {
+          glyph.textContent = EMPTY_HEART;
+          glyph.classList.remove('activated-heart');
+        }
+      })
+      .catch(error => {
+        // Show error message
+        modal.querySelector('#modal-message').textContent = error;
+        modal.classList.remove('hidden');
+
+        // Hide after 3 seconds
+        setTimeout(() => modal.classList.add('hidden'), 3000);
+      });
+  });
+});
+
+
 
 
 
